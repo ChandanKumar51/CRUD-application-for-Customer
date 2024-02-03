@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer List</title>
+</head>
+<body>
+
+<h2>Customer List</h2>
+
+<table border="1" id="customerTable">
+  <tr>
+    <th>ID</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Action</th>
+  </tr>
+</table>
+
+<br>
+<a href="customer-create.html">Add New Customer</a>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Fetch data from the backend using AJAX
+        fetch('https://your-api-endpoint/api/customers')
+            .then(response => response.json())
+            .then(customers => {
+                const table = document.getElementById('customerTable');
+
+                customers.forEach(customer => {
+                    const row = table.insertRow(-1);
+                    const cell1 = row.insertCell(0);
+                    const cell2 = row.insertCell(1);
+                    const cell3 = row.insertCell(2);
+                    const cell4 = row.insertCell(3);
+                    const cell5 = row.insertCell(4);
+                    const cell6 = row.insertCell(5);
+
+                    cell1.textContent = customer.id;
+                    cell2.textContent = customer.firstName;
+                    cell3.textContent = customer.lastName;
+                    cell4.textContent = customer.email;
+                    cell5.textContent = customer.phone;
+
+                    const editLink = document.createElement("a");
+                    editLink.href = "customer-edit.html?id=" + customer.id;
+                    editLink.textContent = "Edit";
+
+                    const deleteLink = document.createElement("a");
+                    deleteLink.href = "deleteCustomer.html?id=" + customer.id;
+                    deleteLink.textContent = "Delete";
+
+                    cell6.appendChild(editLink);
+                    cell6.appendChild(document.createTextNode(" | "));
+                    cell6.appendChild(deleteLink);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    });
+</script>
+
+</body>
+</html>
